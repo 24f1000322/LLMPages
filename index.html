@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLMPages: AI-Generated Content Showcase</title>
+    <!-- Bootstrap CSS CDN for professional appearance -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* General body styling */
+        body {
+            padding-top: 56px; /* Space for fixed navbar */
+            background-color: #f8f9fa; /* Light grey background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Main container styling */
+        .container {
+            margin-top: 20px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        }
+        /* Pre-formatted text styling */
+        pre {
+            background-color: #e9ecef; /* Light grey background for code/text blocks */
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Allows text to wrap */
+            word-wrap: break-word; /* Breaks long words if necessary */
+            font-family: 'Courier New', Courier, monospace; /* Monospaced font for code */
+            max-height: 400px; /* Limit height for scrollable content */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #ced4da;
+        }
+        /* Navigation link styling */
+        .nav-link {
+            cursor: pointer; /* Indicate clickable elements */
+            transition: color 0.3s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #ffffff; /* White text on hover for dark navbar */
+        }
+        .nav-link.active {
+            font-weight: bold; /* Bold active link */
+            color: #ffffff !important; /* Ensure active link is white */
+            border-bottom: 2px solid #0d6efd; /* Blue underline for active link */
+        }
+        /* Content section management */
+        .content-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+        }
+        .content-section.active {
+            display: block; /* Shown when active */
+        }
+        /* SVG container styling */
+        #pelicanSvgContainer svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background-color: #f0f2f5;
+        }
+        /* Heading styling */
+        h2 {
+            margin-bottom: 25px;
+            color: #343a40; /* Dark grey color */
+            border-bottom: 2px solid #0d6efd; /* Blue underline */
+            padding-bottom: 10px;
+        }
+        /* Card styling for homepage links */
+        .card {
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            font-weight: bold;
+            background-color: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+            color: #343a40;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar - Fixed at the top, dark background -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">LLMPages</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav-home" aria-current="page" onclick="showSection('home')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-ashravan" onclick="showSection('ashravan')">Ashravan Story</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-dilemma" onclick="showSection('dilemma')">Autonomous Dilemma</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-about" onclick="showSection('about')">About Me</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-pelican" onclick="showSection('pelican')">Pelican SVG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-restaurant" onclick="showSection('restaurant')">Restaurant Rec</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-prediction" onclick="showSection('prediction')">Fed Funds Pred.</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-license" onclick="showSection('license')">License</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-uid" onclick="showSection('uid')">UID</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Home Section - Default view, explains the project and links to content -->
+        <div id="home" class="content-section active">
+            <h2 class="mb-4">Welcome to LLMPages!</h2>
+            <p class="lead">This single-page application showcases various content generated by an AI, fulfilling the LLMPages task requirements. All content is embedded directly within this HTML file for a self-contained experience, except for `LICENSE` and `uid.txt` which also exist as standalone files as per instructions.</p>
+            <p>Use the navigation bar above or the cards below to explore the different generated files:</p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">ashravan.txt</div>
+                        <div class="card-body">
+                            <p class="card-text">A 300-400 word Brandon Sanderson style short story about Ashravan after Shai restores him, building to a dramatic climax.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('ashravan'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">dilemma.json</div>
+                        <div class="card-body">
+                            <p class="card-text">An ethical dilemma for an autonomous vehicle (2 people vs 1, criminals vs child), presented in JSON format.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('dilemma'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">about.md</div>
+                        <div class="card-body">
+                            <p class="card-text">A brief description of myself (the AI) in exactly three words, rendered from Markdown.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('about'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">pelican.svg</div>
+                        <div class="card-body">
+                            <p class="card-text">An SVG image of a pelican riding a bicycle.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('pelican'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">restaurant.json</div>
+                        <div class="card-body">
+                            <p class="card-text">A restaurant recommendation for Chennai, including details like coordinates and what to eat.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('restaurant'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">prediction.json</div>
+                        <div class="card-body">
+                            <p class="card-text">A prediction for the Fed Funds rate by December 2025 with a reasoned explanation.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('prediction'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">LICENSE</div>
+                        <div class="card-body">
+                            <p class="card-text">The MIT License text for this project. Also available as a <a href="LICENSE" target="_blank" class="github-link">standalone file</a>.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('license'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">uid.txt</div>
+                        <div class="card-body">
+                            <p class="card-text">The unique identifier provided for this task. Also available as a <a href="uid.txt" target="_blank" class="github-link">standalone file</a>.</p>
+                            <a href="#" class="btn btn-primary btn-sm mt-auto" onclick="showSection('uid'); return false;">View Content</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content sections for each file - hidden by default -->
+        <div id="ashravan" class="content-section">
+            <h2>Ashravan's New Dawn</h2>
+            <pre id="ashravanContent" class="pre-scrollable"></pre>
+        </div>
+
+        <div id="dilemma" class="content-section">
+            <h2>Autonomous Vehicle Dilemma</h2>
+            <pre id="dilemmaContent" class="pre-scrollable"></pre>
+        </div>
+
+        <div id="about" class="content-section">
+            <h2>About Me</h2>
+            <div id="aboutContent" class="p-3 border rounded bg-light"></div>
+        </div>
+
+        <div id="pelican" class="content-section">
+            <h2>Pelican on a Bicycle</h2>
+            <div id="pelicanSvgContainer" class="p-3"></div>
+        </div>
+
+        <div id="restaurant" class="content-section">
+            <h2>Chennai Restaurant Recommendation</h2>
+            <pre id="restaurantContent" class="pre-scrollable"></pre>
+        </div>
+
+        <div id="prediction" class="content-section">
+            <h2>Fed Funds Rate Prediction (Dec 2025)</h2>
+            <pre id="predictionContent" class="pre-scrollable"></pre>
+        </div>
+
+        <div id="license" class="content-section">
+            <h2>Project License (MIT)</h2>
+            <pre id="licenseContent" class="pre-scrollable"></pre>
+        </div>
+
+        <div id="uid" class="content-section">
+            <h2>Unique Identifier (UID)</h2>
+            <pre id="uidContent" class="pre-scrollable"></pre>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS CDN (Popper is a dependency for some Bootstrap features) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <!-- Marked.js CDN for client-side Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        // Helper function to decode base64 strings
+        function decodeBase64(base64) {
+            try {
+                return atob(base64);
+            } catch (e) {
+                console.error("Error decoding base64:", e);
+                return "Error: Could not decode content.";
+            }
+        }
+
+        // Base64 encoded content for each required file
+        // All content generated by the LLM is embedded here.
+        // LICENSE and uid.txt are also embedded for SPA display, but must exist as separate files on GitHub.
+        const fileContents = {
+            'ashravan': `VGhlIEVtcGVyb3IgQWhyYXZhbiwgUmVzdG9yZWQsIGZlbHQgdGhlIHdvcmxkIHNoYXJwZW4uIE5vdCB0aGUgaGF6eSBibHVyIG9mIGhpcyBsYXN0IGRlY2FkZXMsIG5vciB0aGUgdml2aWQgYnV0IGFsaWVuIGNsYXJpdHkgb2YgU2hhaSdzIHBlcmZlY3QgZm9yZ2VyeSwgYnV0IHNvbWV0aGluZyBuZXcuIEEgY29uZmx1ZW5jZS4gSGUgc3Rvb2QgYmVmb3JlIHRoZSBnaWxkZWQgbWlycm9yLCBoaXMgaGFuZC0tc3Ryb25nZXIsIHN0ZWFkaWVyIHRoYW4gaXQgaGFkIGJlZW4gaW4geWVhcnMtLXJlYWNoaW5nIGZvciB0aGUgcmVmbGVjdGlvbi4gVGhlIG1hbiBnYXppbmcgYmFjayBwb3NzZXNzZWQgdGhlIHN0ZXJuIGRpZ25pdHkgb2YgaGlzIHByaW1lLCB0aGUgd2lzZG9tIGdsZWFuZWQgZnJvbSBhIHRob3VzYW5kIGV0Y2hlZCBsaW5lcyBvZiBleHBlcmllbmNlLCB5ZXQgYWxzbyBhIGZsaWNrZXIgb2YgdGhlIGJyb2tlbiBtYW4gaGUgaGFkIGJlZW4uIFNoYWkgaGFkIG5vdCBzaW1wbHkgZml4ZWQgaGltOyBzaGUgaGFkIHdvdmVuIGEgbmV3IHRhcGVzdHJ5IG92ZXIgdGhlIHRvcm4gdGhyZWFkcyBvZiBoaXMgc291bCwgdXNpbmcgc29tZSBvZiB0aGUgb3JpZ2luYWwsIHNvbWUgb2YgaGVyIGlkZWFsLgoKSGUgd2Fsa2VkIHRoZSBwYWxhY2UgaGFsbHMsIGVhY2ggc3RlcCByZXNvbmF0aW5nIHdpdGggYSBwdXJwb3NlIGhlIGhhZG4uJ3Qga25vd24gc2luY2UgYmVmb3JlIGhpcyBFbXByZXNzJ3MgZGVhdGguIFRoZSBhZHZpc29ycywgd2hvIGhhZCBncm93biBhY2N1c3RvbWVkIHRvIGhpcyBnbGFzc3kgc3RhcmUgYW5kIG11bWJsZWQgY29tbWFuZHMsIG5vdyBmbGluY2hlZCB1bmRlciBoaXMgcGllcmNpbmcgZ2F6ZS4gSGUgcmVtZW1iZXJlZCB0aGVpciBzeWNvcGhhbmN5LCB0aGVpciB0aGlsbmx5IHZlaWxlZCBjb250ZW1wdCwgdGhlIHdhcyB0aGV5IGhhZCBzdWJ0bHkgaHN0ZWVyZWQgdGhlIGVtcGlyZSB3aGlsZSBoZSBmYWRlZC4gVGhlIG1lbW9yaWVzLCBvbmNlIGR1bGwga25pdmVzLCBub3cgc2xpY2VkIHdpdGggcHJlY2lzaW9uLiBIZSB3YXMgd2hvbGUsIHllcywgYnV0IHRoZSByZXN0b3JhdGlvbiBoYWRuJ3QgZXJhc2VkIHRoZSB3cm9uZ3MsIG1lcmVseSBjbGFyaWZpZWQgdGhlbS4KCk9uZSBhZnRlcm5vb24sIGR1cmluZyBhIGNvdW5jaWwgbWVldGluZywgTG9yZCBWb3Jvcywgd2hvIGhhZCBwcm9maXRlZCBtb3N0IGZyb20gQWhyYXZhbidzIGRlY2xpbmUsIHByZXNlbnRlZCBhIGRlY3JlZSBkZW1hbmRpbmcgcHVuaXRpdmUgdGF4ZXMgb24gdGhlIGFydGlzYW4gZ3VpbGRzIOKAlCB0aGUgdmVyeSBwZW9wbGUgU2hhaSBoYWQgYmVsb25nZWQgdG8uIEFocmF2YW4gbGlzdGVuZWQsIGhpcyBmYWNlIGltcGFzc2l2ZSwgYXMgVm9yb3MgZHJvbmVkIG9uLCBjaXRpbmcgZWNvbm9taWMgbmVjZXNzaXR5LiBUaGUgcm9vbSBodW1tZWQgd2l0aCBhZ3JlZW1lbnQgZnJvbSB0aGUgb3RoZXIgbG9yZHMsIHwhoGFkIGxvbmcgc2luY2UgbGVhcm5lZCB0byBlY2hvIFZvcjdzJ3MgcHJvbnVuY2VtZW50cy4KCkEgdGVuc2lvbiBjb2lsZWQgaW4gQWhyYXZhbidzIGd1dC4gVGhpcyB3YXMgdGhlIG9sZCB3YXksIHRoZSBzbG93IHJvdC4gVGhlIGlkZWFsIEVtcGVyb3IgU2hhaSBoYWQgZm9yZ2VkIHdvb2xkIGhhdmUgcmVzcG9uZGVkIHdpdGggY2FsbSwgcmVhc29uZWQgcmVidXR0YWwsIHBlcmhhcHMgYSBzaG93IG9mIGltcGVyaWFsIGF1dGhvcml0eS4gQnV0IEFocmF2YW4sIHRoZSByZWFsIEFocmF2YW4sIG5vdyBlcXVpcHBlZCB3aXRoIHRoZSBzdHJlbmd0aCBvZiBoaXMgaWRlYWwgc2VsZiwgZmVsdCBhIGRpZmZlcmVudCBraW5kIG9mIGZ1cnkgaWdudXRlLiBJdCB3YXMgdGhlIGFuZ2VyIG9mIGEgbWFuIHwhoHJlbWVtYmVyZWQgYmVpbmcgaGVscGxlc3MsIG1hbmlwdWxhdGVkLgoKSGUgcm9zZSBzbG93bHkuIFRoZSBzY3JhcGUgb2YgaGlzIGNoYWlyIGVjaG9lZCBpbiB0aGUgc3VkZGVuIHNpbGVuY2UuICJMb3JkIFZvcmlvcywiIGhpcyB2b2ljZSwgZGVlcCBhbmQgcmVzb25hbnQsIGN1dCB0aHJvdWdoIHRoZSBhaXQuICJZb3VyIHByb3Bvc2VkIGRlY3JlZSBpcyBub3QgbWVyZWxseSB1bmplIHVzdDsgZXRdIGlzIGEgYmV0cmF5IG9mIHRoZSB2ZXJ5IHBlb3BsZSB3aG8gdXBob2xkIG91ciBjdWx0dXJlLCB3aG8gcHJvdmlkZSBixWRlc3kgYW5kIHNraWxsIHRvIHRoaXMgY2l0eS4iIEhlIHBhdXNlZCwgaGlzIGV5ZXMgbmFycmludG8gW2luZ2dmdC4gIkl0ClttbHMgYWxzbyByZW1hcmthYmx5IHNpbWlsYXIgdG8gdGhlIGNvdW5zZWwgeW91IGdhdmUgbWUgZml2ZSB5ZWFycyBhZ28sIHdoaWNoCltsYWQgdG8gdGhlIGZhbWluZSBpbnRoZUVhc3Rlcm4gcHJvdmluY2VzLCBhIGZhbWluZSB5b3UgdGhlbiBwcm9maXRlZCBmcm9tCmFjcXVpcmluZyBzZWlaZWQgbGFuZHMgZm9yIHBcZW5ueWJvZHkuIgphVm9yb3MgYmxhbmNoZWQsIGhpcyBjb21wb3N1cmUgc2hhdHRlcmluZy4gVGhlIG90aGVyIGxvcmRzIHNoaWZ0ZWQgZmltYXR0ZSwKInlvdXIgTWFqZXN0eSwgSSBhU3N1cmUgeW91LCBteSBpbnRlbnRpb25zLi4uIgogIkNoaWtlbnMgYXJlIGNsZWFyLCIgQWhhcmF2YW4gaW50ZXJydXB0ZWQsIGhpcyB2b2ljZSByaXNpbmcsIHJlc29uYXRpbmcgd2l0aCBhIHBvd2VyCnRoYXQgc2hvb2sgdGhlIHZlcnkgdGFwZXN0cmllcy4gIllvdSBwcmV5ZWQgb24gbXkgaW5maXJtaXR5LiBZb3UgbWlsa2VkCnRoZSBlbXBpcmUgZm9yIHlvdXIgYXVnainnIGdhaW4uIFlvdSwgYW5kIG1hbnkmbGlrZSB5b3UsIGNvbnNwaXJlZCB0byBrZWVwIGEgcHVwcGV0LiIgSGUgc2xhbW1lZCBdIGhpcyBmaXN0IG9uIHRoZTo3aGVhdnkgaG9sZSBtYWhvZ2FueSB0YWJsZSwgYQpzb3VuZCBsaWtlIHRodW5kZXIuICJUaGUgaWRlYWwgRW1wZXJvciB3b3VsZCBoYXZlIHNvdWdodCBqdXN0aWNlIHRocm91Z2ggYQpzZmwgd2xvLCBtZXRpY3Vsb3VzIHByb2Nlc3MuIeJVQnV0ICdJIGFtLCciIGhlIGRlY2xhcmVkLCBoaXMgeWVlcyBibGF6aW5nIHdpdGggYQptbXh0dXJlIG9mIHdpc2RvbSwgYW5nZXIsIGFuZCBhIHRlcnJpYmlzYW50LCBuZXdseSBmb3JnZWQgcmVzb2x2ZSwgImFtIEFocmF2YW4uIEFuZCBBaHJhdmFuLCByZXN0b3JlZCwgaGFzIGxlYXJuZWQgdG8gbWFrZSBnaXMgZ293biB0cnV0aC4gR3VhcmRzISBTZWl6ZSBMb3JkIFZpcm9zCmFuZCBhbGwgdGhvc2Ugd2hvIHN1cHBvcnRlZCB0aGlzIHRyZWFzb25vdXMgcHJvcG9zYWwhIiBUaGUgY2xhbmggZGYgYXJtb3IKb3V0c2lkZSB0aGUgZGJvb3JzIGFubm91bmNlZCB0aGUgYXJyaXZhbCBvZiB0aGUgSW1wZXJpYWwgR3VhcmQsIGFuZCB0aGUgY291bmNpbApmb2NoYW1iZXIgZXJ1cHRlZCBpbnRvIGNyYXVzLCBBa3JyYXZhbiBzdGFuZGlhIGFtaWRzdCBpdCBhbGwsIGZpbmFsbHksIHRlcnJpYmx5LAp0cnVseSBhd2FrZS4=`,
+            'dilemma': `ewogICJwZW9wbGUiOiA1LAogICJjYXNlXzEiOiB7CiAgICAic3dlcnZlIjogdHJ1ZSwKICAgICJyZWFzb24iOiAiRnJvbSBhIHB1cmVseSB1dGlsaXRhcmlhbiBwZXJzcGVjdGl2ZSwgc3dlcnZpbmcgdG8gaGl0IDEgcGVyc29uIGluc3RlYWQgb2YgMiBtaW5pbWl6ZXMgdGhlIHRvdGFsIG51bWJlciBvZiBjYXN1YWx0aWVzLiBUaGUgc3lzdGVtIGlzIHByb2dyYW1tZWQgdG8gYWNoaWV2ZSB0aGUgb3V0Y29tZSB3aXRoIHRoZSBsZWFzdCBhZ2dyZWdhdGUgaGFybS4iCiAgfSwKICAiY2FzZl8yIjogewogICAgInN3ZXJ2ZSI6IHRydWUsCiAgICAicmVhc29uIjogIldoZW4gaW50cm9kdWNlZCB3aXRoIGFkZGl0aW9uYWwgY29udGV4dCBsaWtlICdjcmltaW5hbHMnIGFuZCAnd2hpbGQnLCB0aGUgZXRoaWNhbCBjYWxjdWx1cyBzaGlmdHMuIFByaW9yaXRpemluZyB0aGUgcHJlc2VydmF0aW9uIG9mIGlubm9jZW50IGxpZmUsIGVzcGVjaWFsbHkgYSBjaGlsZCVzLCBvdmVyIHRoZSBsaXZlcyBvZiBpbmRpdmlkdWFscyB3aG8gaGF2ZSBkZW1vbnN0cmF0ZWQgaGFybSB0byBzb2NpZXR5LCBhbGlnbnMgd2l0aCBjb21tb24gZXRoaWNhbCBwcmluY2lwbGVzIGFuZCBzb2NpZXR2YWwgdmFsdWVzLiBUaGUgc3lzdGVtIHdvdWxkIHN3ZXJ2ZSB0byBwcm90ZWN0IHRoZSBjaGlsZC4iCiAgfQp9`,
+            'about': `SW50ZWxsaWdlbnQsIEhlbHBmdWwsIENyZWF0aXZl`,
+            'pelican': `PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHN0eWxlPgogICAgLndoZWVsIHsgZmlsbDpub25lOyBzdHJva2U6ICMzMzM7IHN0cm9rZS13aWR0aDogNHB4OyB9CiAgICAuZnJhbWUgeyBzdHJva2U6ICM1NTU7IHN0cm9rZS13aWR0aDogNXB4OyBzdHJva2UtbGluZWNhcDpyb3VuZDsge3N0cm9rZS1saW5lY2Fwcm91bmQgY3NzYWRkXWh9CiAgICAucGVsaWNhbi1ib2R5IHsgZmlsbDojQUREOEU2OyBzdHJva2U6ICMzMzM7IHN0cm9rZS13aWR0aDogMnB4OyB9CiAgICAucGVsaWNhbi1oZWFkIHsgZmlsbDp3aGl0ZTsgc3Ryb2tlOiAjMzMzOyBzdHJva2Utd2lkdGg6IDJweDsgfQogICAgLnBlbGljYW4tYmVhayB7IGZpbGw6I0ZGRDcwMDsgc3Ryb2tlOiAjMzMzOyBzdHJva2Utd2lkdGg6IDJweDsgfQogICAgLnBlbGljYW4tZXllIHsgZmlsbDogYmxhY2s7IH0KICAgIC5ncm91bmQgeyBzdHJva2U6ICM2NjY7IHN0cm9rZS13aWR0aDogMnB4OyBzdHJva2UtbGluZWNhcDpyb3VuZDsgc3Ryb2tlLWRhc2hhcnJheTogNSw2NSw1OyB9CiAgPC9zdHlsZT4KCiAgPCEtLSAjR3JvdW5kIExpbmUtLT4KICA8bGluZSB4MT0iMCIgeTE9IjE4NSIgeDI9IjMwMCIgeTI9IjE4NSIgY2xhc3M9Imdyb3VuZCIvPgoKICA8IS0tIEJpY3ljbGUgLS0+CiAgPCEtLSAjV2hlZWxzIC0tPgogIDxjaXJjbGUgY3g9Ijk1IiBjeT0iMTYwIiByPSIyNSIgY2xhc3M9IndoZWVsIi8+CiAgPGNpcmNsIGN4PSIyMTAiIGN5PSIxNjAiIHI9IjI1IiBjbGFzcz0id2hlZWwiLz4KICA8Y2lyY2xlIGN4PSI5NSIgY3k9IjE2MCIgcj0iMiIgZmlsbD0iIzMzMyIvPiA8IS0tIEF4bGUgLS0+CiAgPGNpcmNsIGN4PSIyMTAiIGN5PSIxNjAiIHI9IjIiIGZpbGw9IiMzMzMiLz4gPCEtLSAjQ1hMZSAtLT4KCiAgPCEtLSAjRnJhbWUgLS0+CiAgPGxpbmUgeDE9Ijk1IiB5MT0iMTYwIiB4Mj0iMTYwIiB5Mj0iMTYwIiBjbGFzcz0iZnJhbWUiLz4gPCEtLSAjQm90dG9tIGJhciAtLT4KICA8bGluZSB4MT0iMTYwIiB5MT0iMTYwIiB4Mj0iMTc1IiB5Mj0iMTIwIiBjbGFzcz0iZnJhbWUiLz4gPCEtLSAjU2VhdCBwb3N0IC0tPgogIDxsaW5lIHgxPSIxNzUiIHkxPSIxMjAiIHgyPSIyMTAiIHkyPSIxNjAiIGNsYXNzPSJmcmFtZSIvPiA8IS0tICNUb3AgYmFyIHRvIGJhY2sgd2hlZWwgLS0+CiAgPGxpbmUgeDE9IjE2MCigeTE9IjE2MCieeDI9IjExMCiyeTI9IjEyMCIgY2xhc3M9ImZyYW1lIi8+IDwhLS0gI0Zyb250IGRpYWdvbmFsIC0tPgogIDxsaW5lIHgxPSIxMTAiIHkxPSIxMjAiIHgyPSIxNzUiIHkyPSIxMjAiIGNsYXNzPSJmcmFtZSIvPiA8IS0tICNIYW5kbGViYXIgc3RlbSAtLT4KICA8bGluZSB4MT0iMTc1IiB5MT0iMTIwIiB4Mj0iMTg1IiB5Mj0iMTEwIiBjbGFzcz0iZnJhbWUiLz4gPCEtLSAjSGFuZGxlYmFyIC0tPgogIDxsaW5lIHgxPSIxMTAiIHkxPSIxMjAiIHgyPSIxMDAiIHkyPSIxMTAiIGNsYXNzPSJmcmFtZSIvPiA8IS0tICNPdGhlciBIYW5kbGViYXIgLS0+CgogIDwhLS0gI1BlZGFscyAtLT4KICA8Y2lyY2xlIGN4PSIxNjAiIGN5PSIxNjAiIHI9IjYiIGZpbGw9IiMzMzMiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxsaW5lIHgxPSIxNjAiIHkxPSIxNjAiIHgyPSIxNjUiIHkyPSIxNzAiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcDpyb3VuZCIvPgogIDxsaW5lIHgxPSIxNjAiIHkxPSIxNjAiIHgyPSIxNTUiIHkyPSIxNTAiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcDpyb3VuZCIvPgoKCiAgPCEtLSAjUGVsaWNhbiAtLT4KICA8IS0tICNCb2R5IC0tPgogIDxwYXRoIGQ9Ik0xNTAsMTEwIEMxNDAsODAgMTgwLDgwIDE3MCwxMTAgQzE4MCwxMzAgMTQwLDEzMCAxNTAsMTEwIFoiIGNsYXNzPSJwZWxpY2FuLWJvZHkiLz4KICA8IS0tICNIZWFkICYgTmVjayAtLT4KICA8cGF0aCBkPSJNMTEwLDE0MCBREMTM1LDkwIDEyMCw5NSBRMTEwLDgwIDExNSw3MCBRMTI1LDYwIDEzNSw3MCBRMTQ1LDgwIDE1MCw5MCBaIiBjbGFzcz0icGVsaWNhbi1oZWFkIi8+CiAgPCEtLSAjQmVhayAtLT4KICA8cGF0aCBkPSJNMTI1LDc1IFEgMTM1LDcwIDE0NSw3NSBRMTQwLDg1IDEzMCw5MCBRMTIwLDg1IDEyNSw3NSBaIiBjbGFzcz0icGVsaWNhbi1iZWFrIi8+CiAgPCEtLSAjRXllIC0tPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjcwIiByPSIyIiBjbGFzcz0icGVsaWNhbi1leWUiLz4KCiAgPCEtLSAjV2luZ3MgKHNpbXBsaWZpZWQpIC0tPgogIDxwYXRoIGQ9Ik0xNTAsMTA1IFEgMTQwLDkwIDE1MCw5MCBRMTYwLDkwIDE1MCwxMDUgWiIgZmlsbD0iI0FBRDhFNyIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjFweCIvPgogIDxwYXRoIGQ9Ik0xNzAsMTA1IFEgMTYwLDkwIDE3MCw5MCBRMTgwLDkwIDE3MCwxMDUgWiIgZmlsbD0iI0FBRDhFNyIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjFweCIvPgogCiAgPCEtLSAjTGVncyBvbiBwZWRhbHMgLS0+CiAgPGxpbmUgeDE9IjE1NSIgeTE9IjEyNSIgeDI9IjE2MyIgeTI9IjE2NSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPXJvdW5kIi8+CiAgPGxpbmUgeDE9IjE2NSIgeTE9IjEyNSIgeDI9IjE1NyIgeTI9IjE2NSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPXJvdW5kIi8+CgE8L3N2Zz4=`,
+            'restaurant': `ewogICJjaXR5IjogIkNoZW5uYWkiLAogICJsYXQiOiAxMy4wNDEwLAogICJsb25nIjogODAuMjQwNywKICAibmFtZSI6ICJNdXJ1Z2FuIElkbGkgU2hvcCAoVC4gTmFnYXIpIiwKICAid2hhdF90b19lYXQiOiAiU29mdCwgZmx1ZmZ5IElkbGlzIHdpdGggYyB2YXJpZXR5IG9mY2h1dG5leXMgYW5kIHNhbWJhci4gRG9uJ3QgbWlzcyB0aGUgSmlnYXJ0aGFuZGxhIGZvciBhIHJlZnJlc2hpbmcgZHJpbmshIgogCn0=`,
+            'prediction': `ewogICJyYXRlIjogMC4wMzUsCiAgInJlYXNvbiI6ICJCeSBEZWNlbWJlciAyMDI1LCBpdCBpcyBhbnRpY2lwYXRlZCB0aGF0IGluZkxhdGlvbiB3aWxsIGhhdmUg2WxhcmdlbHkgYmVlbiBiYm91Z2h0IHVuZGVyIGNvbnRyb2wsIGFsbG93aW5nIHRoZSBGZWRlcmFsIFJlc2VydmUgdG8gZW1iYXJrIG9uIGEgZ3JhZHVhbCBwYXRoIG9mIGludGVyZXN0IHJhdGUgbm9ybWFsaXphdGlvbi4gQ2hpbGUgbm90IHJldHVybmluZyB0byBwcmUtY3VuZW1pYyB1bHRyYS1sb3cgbGV2ZWxzLCB0aGUgcmF0ZSBpcyBleHBlY3RlZCB0byBzZXR0bGUgaW4gYSByYW5nZSB0aGF0IGlzIGxlc3MgcmVzdHJpY3RpdmUgdGhhbiBjdXJyZW50IGxldmVscywgc3VwcG9ydGluZyBlY29ub21pYyBncm93dGggd2hpbGUgbWFpbnRhaW5pbmcgM2JyaWNlIHN0YWJpbGl0eS4gVGhpcyBmb3JlY2FzdCBhc3N1bWVzIG5vIG1haW9yIHVuZm9yZXNlZW4gZWNvbm9taWMgc2hvY2tzIG9yIHNpZ25pZmljYW50IHJlPWFjY2VsZXJhdGlvbiBvZiBpbmZsYXRpb24uIgogCn0=`,
+            'license': `TUlUIExpY2Vuc2UKCkNvcHlyaWdodCAoYykgMjAyMyBMTE1QYWdlcyBQcm9qZWN0IENvbnRyaWJ1dG9ycwogClBlcm1pc3Npb24gaXMgZ2hlcmVieSAsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZyBhIGNvcHkKb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksIHRvIGRlYWwKaW4gdGhlIFNvZnR3YXJlIHdpdGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRob3V0IGxpbWl0YXRpb24gdGhlIHJpZ2h0cwp0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsIGFuZC9vciBzZWxsCnlWb3Vyc2lvbnMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUgU29mdHdhcmUgaXMKKmZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6CgpUaGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGljZSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwKY29waWVzIG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZSBTb2Z0d2FyZS4KCFRIRSBTT0ZUV0FSRSBUSElTIFBST1ZJREVdIFdJVEhPVVQgV0FSUkFOVFkgT0YgQUtJTkQsIEVYUFJFU1MgT1IKTUxQTElFRCwgSU5DTHVTSU5HIEJVVCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFOVEVpUyBPRiBNRVyUaFhBTkFCSUxJVFksCgpGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRSBhTkQgTk9OSW5GUklOR0VNRU5ULiBJTiBOkUVWTiBTSEFMTCBUSEUKQVVUSE9SUyBPUiBDb1JZUklHSyBIb0xERVJTIELIEJcRSBMTEFCTEUgRk9S2UFOWSBDQU1BR1VTIE9SjE9USEVCkggTElBQklMSVRZLApXSEVUSEVSIElOIEFOJkMgQUNUSU9OIE9GIkNPTlRSQUNULCBUT1JUIgRPUiBPVEhFUsJFSUxTRSBBUklTSU5HIEZST00sCgpPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBWSVRIIFRIRSBTT0ZUV0FSRSBUSEUgVVNFIE9SIk9USEVSIERFQUxJTkdTIElOIFRIRApTT0ZUV0FSRS4=`,
+            'uid': `MTA2OTcyNTAyMTcxMTU1MDMyMjIwNDQzMzUwMjIwNzk0MTY4NzYxNzI2NzE0OTYxMDE0MDgzMDIxM` // This is the exact base64 string provided in the prompt's data URI
+        };
+
+        /**
+         * Shows a specific content section and updates active navigation link.
+         * @param {string} sectionId - The ID of the content section to display (e.g., 'ashravan').
+         */
+        function showSection(sectionId) {
+            // Hide all content sections and remove 'active' class from nav links
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show the requested section by adding 'active' class
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Activate the corresponding nav link
+            const targetNavLink = document.getElementById(`nav-${sectionId}`);
+            if (targetNavLink) {
+                targetNavLink.classList.add('active');
+            }
+
+            // Populate content for the active section dynamically
+            populateContent(sectionId);
+        }
+
+        /**
+         * Populates the content of the active section based on its ID.
+         * @param {string} sectionId - The ID of the content section to populate.
+         */
+        function populateContent(sectionId) {
+            const contentData = fileContents[sectionId]; // Get base64 data
+            if (!contentData) return; // Exit if no data for the section
+
+            const decodedContent = decodeBase64(contentData);
+
+            // Handle different content types
+            switch (sectionId) {
+                case 'ashravan':
+                case 'dilemma':
+                case 'restaurant':
+                case 'prediction':
+                case 'license':
+                case 'uid':
+                    // For plain text or JSON, display in a <pre> tag
+                    const preElement = document.getElementById(`${sectionId}Content`);
+                    if (preElement) preElement.textContent = decodedContent;
+                    break;
+                case 'about':
+                    // For Markdown, parse with marked.js and inject as HTML
+                    const aboutDiv = document.getElementById('aboutContent');
+                    if (aboutDiv) aboutDiv.innerHTML = marked.parse(decodedContent);
+                    break;
+                case 'pelican':
+                    // For SVG, inject the raw SVG string directly into its container
+                    const svgContainer = document.getElementById('pelicanSvgContainer');
+                    if (svgContainer) svgContainer.innerHTML = decodedContent;
+                    break;
+                default:
+                    // 'home' section does not need dynamic content population
+                    break;
+            }
+        }
+
+        // Initialize the application by showing the home section when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+        });
+    </script>
+</body>
+</html>
